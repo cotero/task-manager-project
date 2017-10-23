@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean class="com.liferay.customtools.service.impl.TaskLocalServiceImpl" id="com.liferay.customtools.service.TaskLocalService" />
+	<bean class="com.liferay.customtools.service.impl.TaskServiceImpl" id="com.liferay.customtools.service.TaskService" />
+	<bean class="com.liferay.customtools.service.persistence.impl.TaskPersistenceImpl" id="com.liferay.customtools.service.persistence.TaskPersistence" parent="basePersistence" />
+</beans>
