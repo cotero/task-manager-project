@@ -52,6 +52,16 @@ public class TaskLocalServiceWrapper implements TaskLocalService,
 			status);
 	}
 
+	@Override
+	public com.liferay.customtools.model.Task addTask(long groupId,
+		long userId, java.lang.String name, java.lang.String description,
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _taskLocalService.addTask(groupId, userId, name, description,
+			status, serviceContext);
+	}
+
 	/**
 	* Creates a new task with the primary key. Does not add the task to the database.
 	*
@@ -144,6 +154,16 @@ public class TaskLocalServiceWrapper implements TaskLocalService,
 	public com.liferay.customtools.model.Task updateTask(
 		com.liferay.customtools.model.Task task) {
 		return _taskLocalService.updateTask(task);
+	}
+
+	@Override
+	public com.liferay.customtools.model.Task updateTask(long taskId,
+		long groupId, long userId, java.lang.String name,
+		java.lang.String description, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _taskLocalService.updateTask(taskId, groupId, userId, name,
+			description, status, serviceContext);
 	}
 
 	@Override

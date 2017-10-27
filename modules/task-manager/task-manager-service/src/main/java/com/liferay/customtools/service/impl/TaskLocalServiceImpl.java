@@ -17,11 +17,15 @@ package com.liferay.customtools.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetLinkConstants;
+import com.liferay.customtools.exception.NoSuchTaskException;
 import com.liferay.customtools.model.Task;
 import com.liferay.customtools.service.base.TaskLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ContentTypes;
 
 /**
  * The implementation of the task local service.
@@ -45,7 +49,7 @@ public class TaskLocalServiceImpl extends TaskLocalServiceBaseImpl {
 	 */
 	
 	
-	public Task addTask(long groupId, long userId, String name, String description, int status) throws PortalException {
+	public Task addTask(long groupId, long userId, String name, String description, int status, ServiceContext serviceContext) throws PortalException {
 
 	    User user = userLocalService.getUserById(userId);
 	    Date now = new Date();
@@ -63,8 +67,67 @@ public class TaskLocalServiceImpl extends TaskLocalServiceBaseImpl {
 	    task.setStatus(status);	    
 	    
 	    taskPersistence.update(task);
+	    
+	    AssetEntry assetEntry = assetEntryLocalService.updateEntry(userId,
+                groupId, task.getCreateDate(),
+                task.getModifiedDate(), Task.class.getName(),
+                taskId, task.getUuid(), 0,
+                serviceContext.getAssetCategoryIds(),
+                serviceContext.getAssetTagNames(), true, true, null, null, null, null,
+                ContentTypes.TEXT_HTML, task.getName(), null, null, null,
+                null, 0, 0, null);
+
+	    assetLinkLocalService.updateLinks(userId, assetEntry.getEntryId(),
+                serviceContext.getAssetLinkEntryIds(),
+                AssetLinkConstants.TYPE_RELATED);
 
 	    return task;
+	}
+	
+	public Task updateTask(long taskId, long groupId, long userId, String name, String description, int status, ServiceContext serviceContext) throws PortalException {
+
+	    User user = userLocalService.getUserById(userId);
+	    Date now = new Date();
+
+	    Task task = taskPersistence.create(taskId);
+	    
+	    task.setGroupId(groupId);	    
+	    task.setCompanyId(user.getCompanyId());
+	    task.setUserId(userId);
+	    task.setCreateDate(now);
+	    task.setModifiedDate(now);	    
+	    task.setName(name);
+	    task.setDescription(description);
+	    task.setStatus(status);	    
+	    
+	    taskPersistence.update(task, serviceContext);
+	    
+	    AssetEntry assetEntry = assetEntryLocalService.updateEntry(userId,
+                groupId, task.getCreateDate(),
+                task.getModifiedDate(), Task.class.getName(),
+                taskId, task.getUuid(), 0,
+                serviceContext.getAssetCategoryIds(),
+                serviceContext.getAssetTagNames(), true, true, null, null, null, null,
+                ContentTypes.TEXT_HTML, task.getName(), null, null, null,
+                null, 0, 0, null);
+
+	    assetLinkLocalService.updateLinks(userId, assetEntry.getEntryId(),
+                serviceContext.getAssetLinkEntryIds(),
+                AssetLinkConstants.TYPE_RELATED);
+
+	    return task;
+	}
+	
+	public Task deleteTask(long taskId) throws PortalException {
+		
+		Task task = taskPersistence.remove(taskId);
+		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(
+				Task.class.getName(), taskId);
+		
+		assetLinkLocalService.deleteLinks(assetEntry.getEntryId());		
+		assetEntryLocalService.deleteEntry(assetEntry);
+		
+		return task;
 	}
 	
 	public List<Task> getTasksByGroupId(long groupId) {
@@ -94,5 +157,57 @@ public class TaskLocalServiceImpl extends TaskLocalServiceBaseImpl {
 	public List<Task> getTasksByUserId(long userId, int start, int end) {
 	    return taskPersistence.findByUserId(userId, start, end);
 	}
+
+	@Override
+	public Task addTask(long groupId, long userId, String name, String description, int status) throws PortalException {
+		User user = userLocalService.getUserById(userId);
+	    Date now = new Date();
+
+	    long taskId = counterLocalService.increment();
+	    Task task = taskPersistence.create(taskId);
+	    
+	    task.setGroupId(groupId);	    
+	    task.setCompanyId(user.getCompanyId());
+	    task.setUserId(userId);
+	    task.setCreateDate(now);
+	    task.setModifiedDate(now);	    
+	    task.setName(name);
+	    task.setDescription(description);
+	    task.setStatus(status);	    
+	    
+	    taskPersistence.update(task);
+	    
+	    AssetEntry assetEntry = assetEntryLocalService.updateEntry(userId,
+                groupId, task.getCreateDate(),
+                task.getModifiedDate(), Task.class.getName(),
+                taskId, task.getUuid(), 0,
+                null, null, true, true, null, null, null, null,
+                ContentTypes.TEXT_HTML, task.getName(), null, null, null,
+                null, 0, 0, null);
+
+	    assetLinkLocalService.updateLinks(userId, assetEntry.getEntryId(), null, AssetLinkConstants.TYPE_RELATED);
+
+	    return task;
+	}
+	
+//	public Task updateTask(Task task) {
+//
+//	    Task taskNew = taskPersistence.update(task);   
+//	    
+//	    AssetEntry assetEntry = assetEntryLocalService.updateEntry(taskNew.getUserId(),
+//	    		taskNew.getGroupId(), task.getCreateDate(),
+//                task.getModifiedDate(), Task.class.getName(),
+//                taskNew.getTaskId(), task.getUuid(), 0,
+//                null,
+//                null, true, true, null, null, null, null,
+//                ContentTypes.TEXT_HTML, task.getName(), null, null, null,
+//                null, 0, 0, null);
+//
+//	    assetLinkLocalService.updateLinks(taskNew.getUserId(), assetEntry.getEntryId(),
+//                null,
+//                AssetLinkConstants.TYPE_RELATED);
+//
+//	    return task;
+//	}
 	
 }

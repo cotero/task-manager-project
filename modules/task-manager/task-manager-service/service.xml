@@ -38,12 +38,23 @@
 	        <finder-column name="status" />
 	    </finder>
 	    
+	    <finder name="Status" return-type="Collection">
+		    <finder-column name="status" />
+		</finder>
+		
+		<finder name="G_S" return-type="Collection">
+		    <finder-column name="groupId" />
+		    <finder-column name="status" />
+		</finder>
+	    
 	    <finder name="UserId_Name" return-type="Collection">
 	        <finder-column name="userId" />
 	        <finder-column name="name" />
 	    </finder>
 		
-
+		<reference package-path="com.liferay.portlet.asset" entity="AssetEntry" />
+		<reference package-path="com.liferay.portlet.asset" entity="AssetLink" />
+		
 	</entity>
 
 

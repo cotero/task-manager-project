@@ -59,6 +59,16 @@ public class TaskLocalServiceUtil {
 		return getService().addTask(groupId, userId, name, description, status);
 	}
 
+	public static com.liferay.customtools.model.Task addTask(long groupId,
+		long userId, java.lang.String name, java.lang.String description,
+		int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTask(groupId, userId, name, description, status,
+			serviceContext);
+	}
+
 	/**
 	* Creates a new task with the primary key. Does not add the task to the database.
 	*
@@ -143,6 +153,16 @@ public class TaskLocalServiceUtil {
 	public static com.liferay.customtools.model.Task updateTask(
 		com.liferay.customtools.model.Task task) {
 		return getService().updateTask(task);
+	}
+
+	public static com.liferay.customtools.model.Task updateTask(long taskId,
+		long groupId, long userId, java.lang.String name,
+		java.lang.String description, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTask(taskId, groupId, userId, name, description,
+			status, serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

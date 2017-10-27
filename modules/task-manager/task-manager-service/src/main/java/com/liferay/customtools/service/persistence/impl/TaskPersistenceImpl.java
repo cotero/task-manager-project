@@ -2999,6 +2999,1035 @@ public class TaskPersistenceImpl extends BasePersistenceImpl<Task>
 
 	private static final String _FINDER_COLUMN_USERID_STATUS_USERID_2 = "task.userId = ? AND ";
 	private static final String _FINDER_COLUMN_USERID_STATUS_STATUS_2 = "task.status = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_STATUS = new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, TaskImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStatus",
+			new String[] {
+				Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS =
+		new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, TaskImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
+			new String[] { Integer.class.getName() },
+			TaskModelImpl.STATUS_COLUMN_BITMASK |
+			TaskModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_STATUS = new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStatus",
+			new String[] { Integer.class.getName() });
+
+	/**
+	 * Returns all the tasks where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the matching tasks
+	 */
+	@Override
+	public List<Task> findByStatus(int status) {
+		return findByStatus(status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the tasks where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @return the range of matching tasks
+	 */
+	@Override
+	public List<Task> findByStatus(int status, int start, int end) {
+		return findByStatus(status, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the tasks where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching tasks
+	 */
+	@Override
+	public List<Task> findByStatus(int status, int start, int end,
+		OrderByComparator<Task> orderByComparator) {
+		return findByStatus(status, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the tasks where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching tasks
+	 */
+	@Override
+	public List<Task> findByStatus(int status, int start, int end,
+		OrderByComparator<Task> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS;
+			finderArgs = new Object[] { status };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_STATUS;
+			finderArgs = new Object[] { status, start, end, orderByComparator };
+		}
+
+		List<Task> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<Task>)finderCache.getResult(finderPath, finderArgs,
+					this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Task task : list) {
+					if ((status != task.getStatus())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_TASK_WHERE);
+
+			query.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(TaskModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(status);
+
+				if (!pagination) {
+					list = (List<Task>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Task>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first task in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching task
+	 * @throws NoSuchTaskException if a matching task could not be found
+	 */
+	@Override
+	public Task findByStatus_First(int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = fetchByStatus_First(status, orderByComparator);
+
+		if (task != null) {
+			return task;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("status=");
+		msg.append(status);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchTaskException(msg.toString());
+	}
+
+	/**
+	 * Returns the first task in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching task, or <code>null</code> if a matching task could not be found
+	 */
+	@Override
+	public Task fetchByStatus_First(int status,
+		OrderByComparator<Task> orderByComparator) {
+		List<Task> list = findByStatus(status, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last task in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching task
+	 * @throws NoSuchTaskException if a matching task could not be found
+	 */
+	@Override
+	public Task findByStatus_Last(int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = fetchByStatus_Last(status, orderByComparator);
+
+		if (task != null) {
+			return task;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("status=");
+		msg.append(status);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchTaskException(msg.toString());
+	}
+
+	/**
+	 * Returns the last task in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching task, or <code>null</code> if a matching task could not be found
+	 */
+	@Override
+	public Task fetchByStatus_Last(int status,
+		OrderByComparator<Task> orderByComparator) {
+		int count = countByStatus(status);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Task> list = findByStatus(status, count - 1, count,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the tasks before and after the current task in the ordered set where status = &#63;.
+	 *
+	 * @param taskId the primary key of the current task
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next task
+	 * @throws NoSuchTaskException if a task with the primary key could not be found
+	 */
+	@Override
+	public Task[] findByStatus_PrevAndNext(long taskId, int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = findByPrimaryKey(taskId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Task[] array = new TaskImpl[3];
+
+			array[0] = getByStatus_PrevAndNext(session, task, status,
+					orderByComparator, true);
+
+			array[1] = task;
+
+			array[2] = getByStatus_PrevAndNext(session, task, status,
+					orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Task getByStatus_PrevAndNext(Session session, Task task,
+		int status, OrderByComparator<Task> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_TASK_WHERE);
+
+		query.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(TaskModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(status);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(task);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<Task> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the tasks where status = &#63; from the database.
+	 *
+	 * @param status the status
+	 */
+	@Override
+	public void removeByStatus(int status) {
+		for (Task task : findByStatus(status, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
+			remove(task);
+		}
+	}
+
+	/**
+	 * Returns the number of tasks where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the number of matching tasks
+	 */
+	@Override
+	public int countByStatus(int status) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_STATUS;
+
+		Object[] finderArgs = new Object[] { status };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_TASK_WHERE);
+
+			query.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(status);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_STATUS_STATUS_2 = "task.status = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S = new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, TaskImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S = new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, TaskImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
+			new String[] { Long.class.getName(), Integer.class.getName() },
+			TaskModelImpl.GROUPID_COLUMN_BITMASK |
+			TaskModelImpl.STATUS_COLUMN_BITMASK |
+			TaskModelImpl.MODIFIEDDATE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_G_S = new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
+			TaskModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
+			new String[] { Long.class.getName(), Integer.class.getName() });
+
+	/**
+	 * Returns all the tasks where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the matching tasks
+	 */
+	@Override
+	public List<Task> findByG_S(long groupId, int status) {
+		return findByG_S(groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
+	}
+
+	/**
+	 * Returns a range of all the tasks where groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @return the range of matching tasks
+	 */
+	@Override
+	public List<Task> findByG_S(long groupId, int status, int start, int end) {
+		return findByG_S(groupId, status, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the tasks where groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching tasks
+	 */
+	@Override
+	public List<Task> findByG_S(long groupId, int status, int start, int end,
+		OrderByComparator<Task> orderByComparator) {
+		return findByG_S(groupId, status, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the tasks where groupId = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TaskModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param start the lower bound of the range of tasks
+	 * @param end the upper bound of the range of tasks (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching tasks
+	 */
+	@Override
+	public List<Task> findByG_S(long groupId, int status, int start, int end,
+		OrderByComparator<Task> orderByComparator, boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S;
+			finderArgs = new Object[] { groupId, status };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_G_S;
+			finderArgs = new Object[] {
+					groupId, status,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<Task> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<Task>)finderCache.getResult(finderPath, finderArgs,
+					this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Task task : list) {
+					if ((groupId != task.getGroupId()) ||
+							(status != task.getStatus())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_TASK_WHERE);
+
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+
+			query.append(_FINDER_COLUMN_G_S_STATUS_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(TaskModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(groupId);
+
+				qPos.add(status);
+
+				if (!pagination) {
+					list = (List<Task>)QueryUtil.list(q, getDialect(), start,
+							end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<Task>)QueryUtil.list(q, getDialect(), start,
+							end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first task in the ordered set where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching task
+	 * @throws NoSuchTaskException if a matching task could not be found
+	 */
+	@Override
+	public Task findByG_S_First(long groupId, int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = fetchByG_S_First(groupId, status, orderByComparator);
+
+		if (task != null) {
+			return task;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("groupId=");
+		msg.append(groupId);
+
+		msg.append(", status=");
+		msg.append(status);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchTaskException(msg.toString());
+	}
+
+	/**
+	 * Returns the first task in the ordered set where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching task, or <code>null</code> if a matching task could not be found
+	 */
+	@Override
+	public Task fetchByG_S_First(long groupId, int status,
+		OrderByComparator<Task> orderByComparator) {
+		List<Task> list = findByG_S(groupId, status, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last task in the ordered set where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching task
+	 * @throws NoSuchTaskException if a matching task could not be found
+	 */
+	@Override
+	public Task findByG_S_Last(long groupId, int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = fetchByG_S_Last(groupId, status, orderByComparator);
+
+		if (task != null) {
+			return task;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("groupId=");
+		msg.append(groupId);
+
+		msg.append(", status=");
+		msg.append(status);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchTaskException(msg.toString());
+	}
+
+	/**
+	 * Returns the last task in the ordered set where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching task, or <code>null</code> if a matching task could not be found
+	 */
+	@Override
+	public Task fetchByG_S_Last(long groupId, int status,
+		OrderByComparator<Task> orderByComparator) {
+		int count = countByG_S(groupId, status);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Task> list = findByG_S(groupId, status, count - 1, count,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the tasks before and after the current task in the ordered set where groupId = &#63; and status = &#63;.
+	 *
+	 * @param taskId the primary key of the current task
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next task
+	 * @throws NoSuchTaskException if a task with the primary key could not be found
+	 */
+	@Override
+	public Task[] findByG_S_PrevAndNext(long taskId, long groupId, int status,
+		OrderByComparator<Task> orderByComparator) throws NoSuchTaskException {
+		Task task = findByPrimaryKey(taskId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Task[] array = new TaskImpl[3];
+
+			array[0] = getByG_S_PrevAndNext(session, task, groupId, status,
+					orderByComparator, true);
+
+			array[1] = task;
+
+			array[2] = getByG_S_PrevAndNext(session, task, groupId, status,
+					orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Task getByG_S_PrevAndNext(Session session, Task task,
+		long groupId, int status, OrderByComparator<Task> orderByComparator,
+		boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_TASK_WHERE);
+
+		query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+
+		query.append(_FINDER_COLUMN_G_S_STATUS_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(TaskModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(groupId);
+
+		qPos.add(status);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(task);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<Task> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the tasks where groupId = &#63; and status = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 */
+	@Override
+	public void removeByG_S(long groupId, int status) {
+		for (Task task : findByG_S(groupId, status, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
+			remove(task);
+		}
+	}
+
+	/**
+	 * Returns the number of tasks where groupId = &#63; and status = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param status the status
+	 * @return the number of matching tasks
+	 */
+	@Override
+	public int countByG_S(long groupId, int status) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_G_S;
+
+		Object[] finderArgs = new Object[] { groupId, status };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_TASK_WHERE);
+
+			query.append(_FINDER_COLUMN_G_S_GROUPID_2);
+
+			query.append(_FINDER_COLUMN_G_S_STATUS_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(groupId);
+
+				qPos.add(status);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_G_S_GROUPID_2 = "task.groupId = ? AND ";
+	private static final String _FINDER_COLUMN_G_S_STATUS_2 = "task.status = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_USERID_NAME =
 		new FinderPath(TaskModelImpl.ENTITY_CACHE_ENABLED,
 			TaskModelImpl.FINDER_CACHE_ENABLED, TaskImpl.class,
@@ -3920,6 +4949,20 @@ public class TaskPersistenceImpl extends BasePersistenceImpl<Task>
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID_STATUS,
 				args);
 
+			args = new Object[] { taskModelImpl.getStatus() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_STATUS, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS,
+				args);
+
+			args = new Object[] {
+					taskModelImpl.getGroupId(), taskModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				args);
+
 			args = new Object[] {
 					taskModelImpl.getUserId(), taskModelImpl.getName()
 				};
@@ -4018,6 +5061,41 @@ public class TaskPersistenceImpl extends BasePersistenceImpl<Task>
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID_STATUS,
 					args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID_STATUS,
+					args);
+			}
+
+			if ((taskModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] { taskModelImpl.getOriginalStatus() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_STATUS, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS,
+					args);
+
+				args = new Object[] { taskModelImpl.getStatus() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_STATUS, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS,
+					args);
+			}
+
+			if ((taskModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						taskModelImpl.getOriginalGroupId(),
+						taskModelImpl.getOriginalStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+					args);
+
+				args = new Object[] {
+						taskModelImpl.getGroupId(), taskModelImpl.getStatus()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
 					args);
 			}
 
