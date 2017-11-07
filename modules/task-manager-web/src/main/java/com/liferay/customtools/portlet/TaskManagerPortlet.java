@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 
 @Component(
+	configurationPid = "com.liferay.customtools.portlet.configuration.TaskManagerConfiguration",
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.social",
